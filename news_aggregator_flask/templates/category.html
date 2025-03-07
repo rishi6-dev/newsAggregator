@@ -27,12 +27,12 @@
         <div class="swiper-wrapper">
             {% for news in news_list %}
             <div class="swiper-slide">
-                <div class="news-card" data-src="{{ news.src }}" data-title = "{{ news.title }}">
-                    <img src="{{ news.image }}" alt="News Image">
+                <div class="news-card" data-src="{{ news.srcurl }}" data-title = "{{ news.title }}">
+                    <img src="{{ news.img }}" alt="News Image">
                     <div class="news-card-content">
                         <h3>{{ news.title }}</h3>
                         <p>{{ news.desc }}</p>
-                        <small>Source: <a href="{{ news.src }}" target="_blank">{{ news.src }}</a> | Date: {{ news.date }}</small>
+                        <small>Source: <a href="{{ news.srcurl }}" target="_blank">{{ news.src }}</a> | Date: {{ news.date }}</small>
                     </div>
                 </div>
             </div>

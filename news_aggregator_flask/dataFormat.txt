@@ -1,4 +1,0 @@
-[
-        {"title": "Tech News 1", "desc": "Description of tech news 1", "src": "CNN", "image": "https://example.com/image1.jpg", "date": "2025-03-07"},
-        {"title": "Tech News 2", "desc": "Description of tech news 2", "src": "The Hindu", "image": "https://example.com/image2.jpg", "date": "2025-03-07"}
-]
