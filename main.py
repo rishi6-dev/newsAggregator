@@ -28,13 +28,13 @@ def main():
         "CNN": "http://rss.cnn.com/rss/edition.rss",
         "TOI": "https://timesofindia.indiatimes.com/rssfeedstopstories.cms"
     }
-    rss_feeds__sports = {}
-    rss_feeds__tech = {}
-    rss_feeds__India = {}
-    rss_feeds__world = {}
-    rss_feeds__business = {}
+    # rss_feeds__sports = {}
+    # rss_feeds__tech = {}
+    # rss_feeds__India = {}
+    # rss_feeds__world = {}
+    # rss_feeds__business = {}
     
-    for source, url in rss_feeds.items():
+    for source, url in rss_feeds_topstories.items():
         print(f"\nNews from {source}:\n" + "="*80)
         news_list = fetch_news(url)
         
