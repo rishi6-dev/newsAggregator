@@ -2,6 +2,8 @@ import feedparser
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
+import nltk
+
 
 def fetch_news(feed_url):
     feed = feedparser.parse(feed_url)
