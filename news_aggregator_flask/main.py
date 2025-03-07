@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from app.fetch_news import fetch_news
-from app.summarise import summary
+
 app = Flask(__name__)
 
 rss_feeds = {
@@ -32,7 +31,7 @@ categories = list(rss_feeds.keys())
 
 @app.route('/')
 def index():
-    
+    categories = list(news_data.keys())
     return render_template('index.html', categories=categories)
 
 @app.route('/category/<category>')
