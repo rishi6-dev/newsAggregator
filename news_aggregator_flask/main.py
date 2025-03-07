@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+from rssFeed import rss_feeds
+
 
 app = Flask(__name__)
 
@@ -27,7 +29,8 @@ news_data = {
 
 @app.route('/')
 def index():
-    categories = list(news_data.keys())
+    # categories = list(news_data.keys())
+    categories = list(rss_feeds.keys())
     return render_template('index.html', categories=categories)
 
 @app.route('/category/<category>')
