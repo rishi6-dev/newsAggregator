@@ -1,3 +1,4 @@
+from flask import Flask, render_template, request, jsonify
 from flask import Flask, render_template
 from rssFeed import rss_feeds
 
@@ -39,6 +40,19 @@ def category_page(category):
         return render_template('category.html', category=category, news_list=news_data[category])
     else:
         return "Category not found", 404
+
+@app.route('/get_summary', methods=['GET'])
+def get_summary():
+    src_url = request.args.get("url")  # Get URL from query parameter
+    title = request.args.get("title")
+    print(src_url,title)
+    if not src_url:
+        return jsonify({"error": "No URL provided"}), 400  # Handle missing URL
+
+    # Dummy response for now
+    summary = f"Summary for {src_url}"
+
+    return jsonify({"summary": summary, "title":title})  # Return JSON response
 
 if __name__ == '__main__':
     app.run(debug=True)
