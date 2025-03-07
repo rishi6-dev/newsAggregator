@@ -1,0 +1,56 @@
+from flask import Flask, request, render_template, jsonify
+import feedparser
+from newspaper import Article
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.text_rank import TextRankSummarizer
+
+app = Flask(__name__)
+
+# RSS Feeds
+RSS_FEEDS = {
+    "sports": "https://www.thehindu.com/sport/feeder/default.rss",
+    "tech": "http://feeds.feedburner.com/TechCrunch/",
+    "india": "https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms",
+    "world": "https://www.thehindu.com/news/international/feeder/default.rss",
+    "markets": "http://rss.cnn.com/rss/money_markets.rss"
+}
+
+@app.route("/")
+def home():
+    """Render homepage with category options."""
+    return render_template("index.html", categories=RSS_FEEDS.keys())
+
+@app.route("/category/<category_name>")
+def get_news_by_category(category_name):
+    """Fetches news for the selected category, processes it, and renders the page."""
+    if category_name not in RSS_FEEDS:
+        return "Invalid category", 404
+    
+    rss_url = RSS_FEEDS[category_name]
+    news_list = fetch_news(rss_url)  # Fetch news from RSS feed
+    
+    # Process each article (fetch full article & summarize)
+    for news in news_list:
+        full_text = fetch_full_article(news["link"])
+        news["summary"] = summarize_text(full_text)
+    
+    return render_template("category.html", category=category_name, news_list=news_list)
+
+def fetch_news(feed_url):
+    """Fetches articles from the RSS feed and returns a list of news items."""
+    # TODO: Implement this function
+    return []
+
+def fetch_full_article(news_url):
+    """Fetches full article text using newspaper3k."""
+    # TODO: Implement this function
+    return ""
+
+def summarize_text(article_text):
+    """Summarizes the article using Sumy."""
+    # TODO: Implement this function
+    return ""
+
+if __name__ == "__main__":
+    app.run(debug=True)
