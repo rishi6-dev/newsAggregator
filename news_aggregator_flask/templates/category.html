@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ category.replace('_', ' ').title() }} News</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+
     <link rel="stylesheet" href="/static/cards.css">
 </head>
+
 <body>
     <nav class="navbar">
         <a href="{{ url_for('index') }}" class="flex items-center">
@@ -18,36 +22,81 @@
         </a>
         <span class="text-white text-lg font-semibold">{{ category.replace('_', ' ').title() }}</span>
     </nav>
-    
+
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             {% for news in news_list %}
-                <div class="swiper-slide">
-                    <div class="news-card">
-                        <img src="{{ news.image }}" alt="News Image">
-                        <div class="news-card-content">
-                            <h3>{{ news.title }}</h3>
-                            <p>{{ news.desc }}</p>
-                            <small>Source: <a href="{{ news.src }}" target="_blank">{{ news.src }}</a> | Date: {{ news.date }}</small>
-                        </div>
+            <div class="swiper-slide">
+                <div class="news-card" data-src="{{ news.src }}" data-title = "{{ news.title }}">
+                    <img src="{{ news.image }}" alt="News Image">
+                    <div class="news-card-content">
+                        <h3>{{ news.title }}</h3>
+                        <p>{{ news.desc }}</p>
+                        <small>Source: <a href="{{ news.src }}" target="_blank">{{ news.src }}</a> | Date: {{ news.date }}</small>
                     </div>
                 </div>
+            </div>
             {% endfor %}
         </div>
         <div class="swiper-pagination"></div>
     </div>
 
+    <div id="newsModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id = "modalTitle">News Summary</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
     <script>
-        var swiper = new Swiper(".mySwiper", {
-            direction: "vertical",
-            slidesPerView: 1,
-            spaceBetween: 20,
-            mousewheel: true,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
+        $(document).ready(function () {
+            // Initialize Swiper
+            var swiper = new Swiper(".mySwiper", {
+                direction: "vertical",
+                slidesPerView: 1,
+                spaceBetween: 20,
+                mousewheel: true,
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+            });
+
+            // Handle News Card Click
+            $('.news-card').on('click', function () {
+                var newsUrl = $(this).data('src');
+                var title = $(this).data('title');
+                $('#modalBody').html('<p>Loading summary...</p>');
+                $('#newsModal').modal('show');
+
+                $.ajax({
+                    url: '/get_summary',
+                    type: 'GET',
+                    data: { url: newsUrl, title: title },
+                    success: function (response) {
+                        $('#modalBody').html('<p>' + response.summary + '</p>');
+                        $('#modalTitle').html(response.title)
+                    },
+                    error: function () {
+                        $('#modalBody').html('<p>Failed to load summary.</p>');
+                    }
+                });
+            });
         });
     </script>
+
 </body>
 </html>
